@@ -5,7 +5,7 @@ namespace HelloWorld;
 internal class Program(string val = " ")
 {
     public string Val = $"{val[0..0]}";
-    private static Lazy<Program> _val = new(() => new());
+    private readonly static Lazy<Program> _val = new(() => new());
     public static Program Instance => _val.Value;
     [ModuleInitializer]
     public static void AA2() => Instance.A1();
@@ -26,7 +26,14 @@ internal class Program(string val = " ")
             return Val;
         }
         await Console.Out.WriteAsync(new[] { F(), new object { } } switch { [string val, ..] => val, _ and [] or [..] and not null or null => null });
-        await foreach (var item in A()) Console.Write(item);
+        try
+        {
+            await foreach (var item in A()) Console.Write(item);
+        }
+        catch (Exception e)
+        {
+            await Console.Out.WriteAsync(e.Message);
+        }
         Auto v2 = 0;
         for (int i = 0; i < 27; i++) v2 = B();
         Console.Write(await(int)v2);
@@ -44,7 +51,7 @@ internal class Program(string val = " ")
     {
         yield return await (1L.GetType().Name.First() + 0x23);
         yield return ((Func<char>)(() => string.Empty.FirstOrDefault()))();
-        yield return await await (1, 5);
+        throw new((await await (1, 5)).ToString());
     }
     unsafe int B()
     {
