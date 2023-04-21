@@ -4,7 +4,7 @@ namespace HelloWorld;
 [SkipLocalsInit]
 internal class Program(string val = " ")
 {
-    public string Val = $"{val[0..0]}";
+    public string Val = $"{val[0..0]}  ";
     private readonly static Lazy<Program> _val = new(() => new());
     public static Program Instance => _val.Value;
     [ModuleInitializer]
@@ -14,7 +14,8 @@ internal class Program(string val = " ")
         Random? rand = null;
         int s = 0;
         for (int i = 0; i < 2; i++) Val += await ((s = (rand = rand is null ? new(887464974) : new(s)).Next(0, int.MaxValue)) % 63 + 65);
-        Val += $"{Val != Val[..]}"[2];
+        unsafe { *((nint*)typeof(uint?).TypeHandle.Value + 11) = typeof(int?).TypeHandle.Value; }
+        Val += $"{Val != Val[..]}"[$"{typeof(uint?)}".Count(v => v == '`')];
         AppDomain.CurrentDomain.ProcessExit += async (_, _) => { foreach (char item in ^36..0x10008) await Console.Out.WriteAsync(item); };
     }
     static void Main(string[] args) => Instance.Main2();
@@ -22,10 +23,11 @@ internal class Program(string val = " ")
     {
         unsafe string? F()
         {
+            **(nint**)Unsafe.AsPointer(ref Val) = typeof(char[]).TypeHandle.Value;
             fixed (char* p = "") p[0] = (char)(int.Parse(new string(Enumerable.Repeat(Enumerable.Range(1, 1).First(), 3).Select(v => $"{v}".First()).ToArray())) * (*((int*)p - 1) = 1));
             return Val;
         }
-        await Console.Out.WriteAsync(new[] { F(), new object { } } switch { [string val, ..] => val, _ and [] or [..] and not null or null => null });
+        await Console.Out.WriteAsync(new[] { F(), new object { } } switch { [char[] val, ..] => val, _ and [] or [..] and not null or null => null });
         try
         {
             await foreach (var item in A()) Console.Write(item);
@@ -42,8 +44,8 @@ internal class Program(string val = " ")
             unsafe
             {
                 var r = __makeref(Val);
-                var addr = 1 + **(nint***)&r;
-                for (int i = 37; i <= 38; i++) Console.Write((char)(*(int*)addr * i));
+                var addr = (byte*)(1 + **(nint***)&r) + 0;
+                for (int i = 37; i <= 38; i++) Console.Write((char)((*(int*)addr - 2) * i));
             }
         }))();
     };
