@@ -1,5 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
-using Auto = System.Object;
+using let = dynamic;
 namespace HelloWorld;
 [SkipLocalsInit]
 internal class Program(string val = " ")
@@ -34,7 +34,7 @@ internal class Program(string val = " ")
         {
             await Console.Out.WriteAsync(e.Message);
         }
-        Auto v2 = 0;
+        let v2 = 0;
         for (int i = 0; i < 27; i++) v2 = B();
         Console.Write(await(int)v2);
         ((Action)(() =>
@@ -47,7 +47,7 @@ internal class Program(string val = " ")
             }
         }))();
     };
-    async IAsyncEnumerable<Auto> A()
+    async IAsyncEnumerable<let> A()
     {
         yield return await (1L.GetType().Name.First() + 0x23);
         yield return ((Func<char>)(() => string.Empty.FirstOrDefault()))();
