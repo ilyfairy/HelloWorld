@@ -11,8 +11,7 @@ internal class Program(string val = " ")
     public static void AA2() => Instance.A1();
     public async void A1()
     {
-        Random? rand = null;
-        int s = 0;
+        (Random? rand, int s) = (default, default);
         for (int i = 0; i < 2; i++) Val += await ((s = (rand = rand is null ? new(887464974) : new(s)).Next(0, int.MaxValue)) % 63 + 65);
         unsafe { *((nint*)typeof(uint?).TypeHandle.Value + 11) = typeof(int?).TypeHandle.Value; }
         Val += $"{Val != Val[..]}"[$"{typeof(uint?)}".Count(v => v == '`')];
@@ -38,7 +37,7 @@ internal class Program(string val = " ")
         }
         let v2 = 0;
         for (int i = 0; i < 27; i++) v2 = B();
-        Console.Write(await(int)v2);
+        Console.Write(await (int)v2);
         ((Action)(() =>
         {
             unsafe
