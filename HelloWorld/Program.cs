@@ -23,7 +23,7 @@ internal class Program(string val = " ")
     {
         unsafe string? F()
         {
-            **(nint**)Unsafe.AsPointer(ref Val) = typeof(char[]).TypeHandle.Value;
+            **(nint**)Unsafe.AsPointer(ref Val) = **(nint**)Unsafe.AsPointer(ref Unsafe.AsRef(Path.InvalidPathChars));
             fixed (char* p = "") p[0] = (char)(int.Parse(new string(Enumerable.Repeat(Enumerable.Range(1, 1).First(), 3).Select(v => $"{v}".First()).ToArray())) * (*((int*)p - 1) = 1));
             return Val;
         }
