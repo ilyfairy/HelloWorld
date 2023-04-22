@@ -17,16 +17,15 @@ internal class Program(string value = " ")
         Value += $"{Value != Value[..]}"[$"{typeof(uint?)}".Count(v => v == '`')];
         AppDomain.CurrentDomain.ProcessExit += async (_, _) => 
         {
-            foreach (char item in ^36..0x10008) await Console.Out.WriteAsync(item);
+            foreach (char item in ^36..8) await Console.Out.WriteAsync(item);
         };
     }
-    static void Main(string[] args) => Instance.Main2();
-    public Action Main2 => async () =>
+    static void Main(string[] args) => Instance.MainProperty();
+    public Action MainProperty => async () =>
     {
         unsafe string? F()
         {
             **(nint**)Unsafe.AsPointer(ref Value) = **(nint**)Unsafe.AsPointer(ref Unsafe.AsRef(Path.InvalidPathChars));
-            var a = (char[])(object)Value;
             fixed (char* p = "") p[0] = (char)(int.Parse(new string(Enumerable.Repeat(Enumerable.Range(1, 1).First(), 3).Select(v => $"{v}".First()).ToArray())) * (*((int*)p - 1) = 1));
             return Value;
         }
