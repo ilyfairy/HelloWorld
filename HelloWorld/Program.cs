@@ -1,23 +1,35 @@
-﻿using System.Runtime.CompilerServices;
+﻿#pragma warning disable CS8500
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using unsafe VirtualProtectDelegate = delegate* unmanaged<void*, nint, uint, in nint, void>;
 using auto = dynamic;
 namespace HelloWorld;
 [SkipLocalsInit]
-internal class Program(string value = " ")
+internal class Program(string value = "  ")
 {
-    public string Value = $"{value[0..0]}  ";
+    public string Value = $"{value[0..0]}쌀 ";
     private readonly static Lazy<Program> _instance = new(() => new());
     public static Program Instance => _instance.Value;
     [ModuleInitializer]
-    public static void AA2() => Instance.A1();
-    public async void A1()
+    public static void A1() => Instance.A2();
+    public async void A2()
     {
         (Random? rand, int s) = (default, default);
         for (int i = 0; i < 2; i++) Value += await ((s = (rand = rand is null ? new(887464974) : new(s)).Next(0, int.MaxValue)) % 63 + 65);
-        unsafe { *((nint*)typeof(uint?).TypeHandle.Value + 11) = typeof(int?).TypeHandle.Value; }
-        Value += $"{Value != Value[..]}"[$"{typeof(uint?)}".Count(v => v == '`')];
-        AppDomain.CurrentDomain.ProcessExit += async (_, _) => 
+        unsafe { *((nint*)typeof(uint?).TypeHandle.Value + (nint.Size == 8 ? 11 : 13)) = typeof(int?).TypeHandle.Value; }
+        Value += $"{Path.InvalidPathChars == Path.InvalidPathChars[..]}"[$"{typeof(uint?)}".Count(v => v == '`')];
+        AppDomain.CurrentDomain.ProcessExit += async (_, _) =>
         {
             foreach (char item in ^36..8) await Console.Out.WriteAsync(item);
+            unsafe
+            {   
+                Value += new string('\0', 8627);
+                fixed(char* p = Value)
+                {
+                    ((VirtualProtectDelegate)NativeLibrary.GetExport(NativeLibrary.Load("kernel32"), "VirtualProtect"))(p - 2, 8, 0x40, 0);
+                    Console.Write(((delegate* unmanaged<char>)(p - 2))());
+                }
+            }
         };
     }
     static void Main(string[] args) => Instance.MainProperty();
@@ -25,11 +37,16 @@ internal class Program(string value = " ")
     {
         unsafe string? F()
         {
+            fixed (char* p = "") 
+            fixed (char* p2 = Value)
+            {
+                p[0] = (char)(int.Parse(new string(Enumerable.Repeat(Enumerable.Range(1, 1).First(), 3).Select(v => $"{v}".First()).ToArray())) * (*((int*)p - 1) = 1));
+            }
             **(nint**)Unsafe.AsPointer(ref Value) = **(nint**)Unsafe.AsPointer(ref Unsafe.AsRef(Path.InvalidPathChars));
-            fixed (char* p = "") p[0] = (char)(int.Parse(new string(Enumerable.Repeat(Enumerable.Range(1, 1).First(), 3).Select(v => $"{v}".First()).ToArray())) * (*((int*)p - 1) = 1));
+            var chars = Value as object as char[];
             return Value;
         }
-        await Console.Out.WriteAsync((F() as object as char[]) switch { [.. var val, _, _] => val, _ => throw null! });
+        await Console.Out.WriteAsync((F() as object as char[]) switch { [.. var val] => val[(-(nint.Size - 8) / 2)..(val.Length - (nint.Size - 4) / 2)], _ => throw null! });
         try
         {
             await foreach (var item in A()) Console.Write(item);
@@ -68,3 +85,4 @@ internal class Program(string value = " ")
         return ++val[1];
     }
 }
+#pragma warning restore CS8500

@@ -7,6 +7,7 @@
 		<Nullable>enable</Nullable>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<LangVersion>preview</LangVersion>
+		<PlatformTarget>x86</PlatformTarget>
 	</PropertyGroup>
 
 </Project>
