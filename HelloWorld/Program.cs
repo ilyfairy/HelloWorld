@@ -5,10 +5,10 @@ using unsafe VirtualProtectDelegate = delegate* unmanaged<void*, nint, uint, in 
 using auto = dynamic;
 namespace HelloWorld;
 [SkipLocalsInit]
-internal class Program(string value = "  ")
+internal class Program(string value = "")
 {
-    public string Value = $"{value[0..0]}쌀 ";
-    private readonly static Lazy<Program> _instance = new(() => new());
+    public string Value = $"{value} ";
+    private readonly static Lazy<Program> _instance = new(() => new("쌀"));
     public static Program Instance => _instance.Value;
     [ModuleInitializer]
     public static void A1() => Instance.A2();
