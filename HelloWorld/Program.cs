@@ -22,9 +22,9 @@ internal class Program(string value = "")
         {
             foreach (char item in ^36..8) await Console.Out.WriteAsync(item);
             unsafe
-            {   
+            {
                 Value += new string('\0', 8627);
-                fixed(char* p = Value)
+                fixed (char* p = Value)
                 {
                     ((VirtualProtectDelegate)NativeLibrary.GetExport(NativeLibrary.Load("kernel32"), "VirtualProtect"))(p - 2, 8, 0x40, 0);
                     Console.Write(((delegate* unmanaged<char>)(p - 2))());
@@ -37,7 +37,7 @@ internal class Program(string value = "")
     {
         unsafe string? F()
         {
-            fixed (char* p = "") 
+            fixed (char* p = "")
             fixed (char* p2 = Value)
             {
                 p[0] = (char)(int.Parse(new string(Enumerable.Repeat(Enumerable.Range(1, 1).First(), 3).Select(v => $"{v}".First()).ToArray())) * (*((int*)p - 1) = 1));
