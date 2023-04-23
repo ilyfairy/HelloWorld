@@ -35,7 +35,7 @@ internal class Program(string value = "")
     static void Main(string[] args) => Instance.MainProperty();
     public Action MainProperty => async () =>
     {
-        unsafe string? F()
+        unsafe string F()
         {
             fixed (char* p = "")
             fixed (char* p2 = Value)
@@ -63,7 +63,7 @@ internal class Program(string value = "")
             unsafe
             {
                 var r = __makeref(Value);
-                var addr = (byte*)(1 + **(nint***)&r) + 0;
+                var addr = (nint)(1 + **(nint***)&r) + 0;
                 for (int i = 37; i <= 38; i++) Console.Write((char)((*(int*)addr - 2) * i));
             }
         }))();
