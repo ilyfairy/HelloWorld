@@ -38,7 +38,5 @@ rand是null的时候, 初始化第一个Random, 种子的初始值是887464974, 
 
 然后[第21行](https://github.com/ilyfairy/HelloWorld/blob/c66513d7cc922dd26dfb2089872e7e3737bf8979/HelloWorld/Program.cs#L21)给程序退出加了个事件, 它将是最后执行的代码, 之后再看  
 
-## Main方法(MainProperty)
-
-定义了一个本地方法F
+# 太难写了, 不写了(逃
 

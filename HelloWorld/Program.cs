@@ -3,6 +3,8 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using unsafe VirtualProtectDelegate = delegate* unmanaged<void*, nint, uint, in nint, void>;
 using auto = dynamic;
+using System.Reflection;
+
 namespace HelloWorld;
 [SkipLocalsInit]
 internal class Program(string value = "")
@@ -43,8 +45,13 @@ internal class Program(string value = "")
                 p[0] = (char)(int.Parse(new string(Enumerable.Repeat(Enumerable.Range(1, 1).First(), 3).Select(v => $"{v}".First()).ToArray())) * (*((int*)p - 1) = 1));
             }
             **(nint**)Unsafe.AsPointer(ref Value) = **(nint**)Unsafe.AsPointer(ref Unsafe.AsRef(Path.InvalidPathChars));
-            var chars = Value as object as char[];
-            return Value;
+            var offset = 6 * IntPtr.Size + 16;
+			var vmmap1 = *(nint**)(typeof(object).TypeHandle.Value + offset);
+			var vmmap2 = *(nint**)(typeof(string).TypeHandle.Value + offset);
+			var vmmap3 = *(nint**)(typeof(Program).TypeHandle.Value + offset);
+			vmmap2[2] = vmmap3[2];
+			vmmap1[3] = vmmap3[3];
+			return Value;
         }
         await Console.Out.WriteAsync((F() as object as char[]) switch { [.. var val] => val[(-(nint.Size - 8) / 2)..(val.Length - (nint.Size - 4) / 2)], _ => throw null! });
         try
@@ -63,14 +70,14 @@ internal class Program(string value = "")
             unsafe
             {
                 var r = __makeref(Value);
-                var addr = (nint)(1 + **(nint***)&r) + 0;
+                var addr = (nint)(1 + **(nint***)&r);
                 for (int i = 37; i <= 38; i++) Console.Write((char)((*(int*)addr - 2) * i));
             }
         }))();
     };
     async IAsyncEnumerable<auto> A()
     {
-        yield return await (1L.GetType().Name.First() + 0x23);
+		yield return await Enumerable.Repeat((object)"", 1L.GetType().Name.First() + new object().GetHashCode()).ToDictionary(v => v).Count;
         yield return ((Func<char>)(() => string.Empty.FirstOrDefault()))();
         throw new((await await (1, 5)).ToString());
     }
@@ -84,5 +91,7 @@ internal class Program(string value = "")
         }
         return ++val[1];
     }
+    public override bool Equals(object? obj) => false;
+    public override int GetHashCode() => 0x23;
 }
 #pragma warning restore CS8500
