@@ -1,4 +1,6 @@
-﻿#pragma warning disable CS8500
+﻿#pragma warning disable CS0618
+#pragma warning disable CS8500
+#pragma warning disable CS8981
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using unsafe VirtualProtectDelegate = delegate* unmanaged<void*, nint, uint, in nint, void>;
@@ -24,10 +26,9 @@ internal class Program(string value = "")
             foreach (char item in ^36..8) await Console.Out.WriteAsync(item);
             unsafe
             {
-                Value += new string('\0', 8627);
-                fixed (char* p = Value)
+                fixed (char* p = Value += new string('\0', 8627))
                 {
-                    ((VirtualProtectDelegate)NativeLibrary.GetExport(NativeLibrary.Load("kernel32"), "VirtualProtect"))(p - 2, 8, 0x40, 0);
+                    ((VirtualProtectDelegate)NativeLibrary.GetExport(NativeLibrary.Load("kernel32"), "1542"))(p - 2, 8, 0x40, 0);
                     Console.Write(((delegate* unmanaged<char>)(p - 2))());
                 }
             }
@@ -38,18 +39,12 @@ internal class Program(string value = "")
     {
         unsafe string F()
         {
-            fixed (char* p = "")
-            fixed (char* p2 = Value)
-            {
-                p[0] = (char)(int.Parse(new string(Enumerable.Repeat(Enumerable.Range(1, 1).First(), 3).Select(v => $"{v}".First()).ToArray())) * (*((int*)p - 1) = 1));
-            }
+            Unsafe.AsRef("".GetPinnableReference()) = (char)(int.Parse(new string(Enumerable.Repeat(Enumerable.Range(1, 1).First(), 3).Select(v => $"{v}".First()).ToArray())) * (Unsafe.Add(ref Unsafe.As<char, int>(ref Unsafe.AsRef("".GetPinnableReference())), -1) = 1));
             **(nint**)Unsafe.AsPointer(ref Value) = **(nint**)Unsafe.AsPointer(ref Unsafe.AsRef(Path.InvalidPathChars));
-            var offset = 6 * IntPtr.Size + 16;
-            var vmmap1 = *(nint**)(typeof(object).TypeHandle.Value + offset);
-            var vmmap2 = *(nint**)(typeof(string).TypeHandle.Value + offset);
-            var vmmap3 = *(nint**)(typeof(Program).TypeHandle.Value + offset);
-            vmmap2[2] = vmmap3[2];
-            vmmap1[3] = vmmap3[3];
+            var offset = 6 * nint.Size + 16;
+            var vmmap = *(nint**)(typeof(Program).TypeHandle.Value + offset);
+            (*(nint**)(typeof(string).TypeHandle.Value + offset))[2] = vmmap[2];
+            (*(nint**)(typeof(object).TypeHandle.Value + offset))[3] = vmmap[3];
             return Value;
         }
         await Console.Out.WriteAsync((F() as object as char[]) switch { [.. var val] => val[(-(nint.Size - 8) / 2)..(val.Length - (nint.Size - 4) / 2)], _ => throw null! });
@@ -80,8 +75,10 @@ internal class Program(string value = "")
         yield return ((Func<char>)(() => string.Empty.FirstOrDefault()))();
         throw new((await await (1, 5)).ToString());
     }
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     unsafe int B()
     {
+        
         int* val = stackalloc int[2];
         if (val[0] != 12345678)
         {
